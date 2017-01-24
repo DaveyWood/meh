@@ -12,13 +12,17 @@ const TODO_FILTERS = {
 export default class MainSection extends Component {
   static propTypes = {
     todos: PropTypes.array.isRequired,
-    actions: PropTypes.object.isRequired
+    completeAll: PropTypes.func.isRequired,
+    clearCompleted: PropTypes.func.isRequired,
+    completeTodo: PropTypes.func.isRequired,
+    deleteTodo: PropTypes.func.isRequired,
+    editTodo: PropTypes.func.isRequired
   }
 
   state = { filter: SHOW_ALL }
 
   handleClearCompleted = () => {
-    this.props.actions.clearCompleted()
+    this.props.clearCompleted()
   }
 
   handleShow = filter => {
@@ -26,13 +30,13 @@ export default class MainSection extends Component {
   }
 
   renderToggleAll(completedCount) {
-    const { todos, actions } = this.props
+    const { todos, completeAll } = this.props
     if (todos.length > 0) {
       return (
         <input className="toggle-all"
                type="checkbox"
                checked={completedCount === todos.length}
-               onChange={actions.completeAll} />
+               onChange={completeAll} />
       )
     }
   }
@@ -54,7 +58,7 @@ export default class MainSection extends Component {
   }
 
   render() {
-    const { todos, actions } = this.props
+    const { todos, editTodo, completeTodo, deleteTodo } = this.props
     const { filter } = this.state
 
     const filteredTodos = todos.filter(TODO_FILTERS[filter])
@@ -68,7 +72,10 @@ export default class MainSection extends Component {
         {this.renderToggleAll(completedCount)}
         <ul className="todo-list">
           {filteredTodos.map(todo =>
-            <TodoItem key={todo.id} todo={todo} {...actions} />
+            <TodoItem key={todo.id} todo={todo}
+              completeTodo={completeTodo}
+              deleteTodo={deleteTodo}
+              editTodo={editTodo} />
           )}
         </ul>
         {this.renderFooter(completedCount)}

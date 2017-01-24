@@ -1,6 +1,6 @@
-# Redux TodoMVC Example
+# TodoMVC Example
 
-This project template was built with [Create React App](https://github.com/facebookincubator/create-react-app).
+This project template was copied from redux/examples.
 
 ## Available Scripts
 
